@@ -41,7 +41,7 @@ attr_accessor :weapon_level
   end
 
   def show_state
-    puts "#{@name} a #{@life_points} points de vie et une arme de niveau #{weapon_level}"
+    puts "__ #{@name} a #{@life_points} points de vie et une arme de niveau #{weapon_level} __"
   end
 
   def compute_damage
@@ -50,15 +50,15 @@ attr_accessor :weapon_level
 
   def search_weapon
     dice_result  = rand(1..6) #lancer de dé pour déterminer le niveau de la nouvealle arme
-    puts "tu as trouvé une arme de niveau #{dice_result}"#l'arme trouvé est égale au résultat du lancé de dé (entre 1 et 6)
+    puts "*** Tu as trouvé une arme de niveau #{dice_result} ***"#l'arme trouvé est égale au résultat du lancé de dé (entre 1 et 6)
     case
       when dice_result > @weapon_level
         @weapon_level = dice_result
-        puts "Youpeee ! elle est meilleur que ton arme actuelle => tu la prends"
+        puts "<-- Youpeee ! elle est meilleur que ton arme actuelle => tu la prends"
       when dice_result == @weapon_level
-        puts "Elle est pareil : tu la prends pas"
+        puts "... Elle est pareil : tu la prends pas..."
       when dice_result > @weapon_level
-        puts "Elle est moins bien : tu la jette contre..."
+        puts "... Elle est moins bien : tu la jette contre..."
     end
   end
 
@@ -66,15 +66,15 @@ attr_accessor :weapon_level
     dice_result  = rand(1..6) #lancer de dé
     case
     when dice_result == 1
-      puts "Tu n'as rien trouvé"
+      puts ":-( Tu n'as rien trouvé"
     when dice_result >= 2 && dice_result <= 5
       @life_points = @life_points + 50 #ajout 50 points de vie sans que la totale dépasse 100
       @life_points = 100 if @life_points > 100 
-      puts "Congrat, tu as trouvé un pack de +50 points de vie !"
+      puts "++ Congrat, tu as trouvé un pack de +50 points de vie ! ++"
     when dice_result == 6
       @life_points =  @life_points + 80 #ajout 80 points de vie sans que la totale dépasse 100
       @life_points = 100 if @life_points > 100
-      puts "Waow, tu as trouvé un pack de +80 points de vie !"
+      puts "+++ Waow, tu as trouvé un pack de +80 points de vie ! +++"
     end
   end
 

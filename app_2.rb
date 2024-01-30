@@ -46,6 +46,7 @@ while user.life_points > 0 && (player1.life_points > 0 || player2.life_points > 
   end
   print "> "
   user_answer = gets.chomp.to_i
+  
   #execution des actions
   case
     when user_answer == 1

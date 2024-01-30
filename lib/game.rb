@@ -4,17 +4,18 @@ class Game
 
   def initialize(name)
     @user = HumanPlayer.new(name) #création de l'object user en tant que HumanPlayer
-    # @enemies = [player1 = Player.new("José"), player2 = Player.new("Josianne"), player3 = Player.new("Jean"), player4 = Player.new("Jaccobe")] #un array de 4 joueur IA
+    @enemies = [player1 = Player.new("José"), player2 = Player.new("Josianne"), player3 = Player.new("Jean"), player4 = Player.new("Jaccobe")] #un array de 4 joueur IA
     @player1 = @enemies[0]
     @player2 = @enemies[1]
     @player3 = @enemies[2]
     @player4 = @enemies[3]
     @players_left = 10 #integer
-    @enemies_in_sight = []
+    @enemies_in_sight = @enemies
+    
   end
 
   def kill_player(player)
-    @enemies.delete(player) #supprime un ennemie du tableau des ennemies
+    @enemies_in_sight.delete(player) #supprime un ennemie du tableau des ennemies
   end
   #version 3.0
   # def is_still_ongoing?
@@ -30,33 +31,42 @@ class Game
   end
 
   def new_players_in_sight
+    puts "Création d'ennemie encours..."
     if @enemies_in_sight.size == @players_left #si les joueurs sont déjà en vue, on ne créer rien
       puts "Tous les joueurs sont déjà en vue : Pas d'ennemie en plus"
+    else
+      dice_result = rand(1..6)
+      case
+        when dice_result == 1
+          puts "Tu as de la chance : pas d'ennemie en plus"
+        when dice_result >= 2 && dice_result <= 4
+          random_name = "player" + rand(100).to_s #générer un nom éléatoire
+          @enemies_in_sight << Player.new(random_name) #ajout d'un joueur
+          puts "Pas de chance : 1 ennemie en plus"
+        when dice_result >= 5
+          random_name = "player" + rand(100).to_s #générer un nom éléatoire
+          @enemies_in_sight << Player.new(random_name) #ajout d'un joueur
+          random_name = "player" + rand(100).to_s #générer un nom éléatoire
+          @enemies_in_sight << Player.new(random_name) #ajout d'un joueur
+          puts "T'es dans la merde : 2 ennemies en plus"
+      end
+      @random_player = @enemies_in_sight[4]
     end
-    dice_result = rand(1..6)
-    case
-      when dice_result == 1
-        puts "Tu as de la chance : pas d'ennemie en plus"
-      when dice_result >= 2 && dice_result <= 4
-        random_name = #générer un nom éléatoire
-        @enemies_in_sight << #ajout d'un joueur
-        puts "Pas de chance : 1 ennemie en plus"
-      when dice_result >= 5
-        random_name = #générer un nom éléatoire
-        @enemies_in_sight << #ajout d'un joueur
-        puts "T'es dans la merde : 2 ennemies en plus"
-    end
+    
+    
+    puts "Il reste #{@enemies_in_sight.size} ennemies à tuer"
+    puts ""
   end
 
   def show_players
     @user.show_state #montre l'état du joueur
-    puts "Il reste #{@enemies.size} ennemies à tuer" #montre le nombre d'ennemie restant
+    puts "Il reste #{@enemies_in_sight.size} ennemies à tuer" #montre le nombre d'ennemie restant
     puts ""
   end
 
   def menu
     #choix des actions
-    puts "Quelle action veux tu faire ?"
+    puts "-- Quelle action veux tu faire ? --"
     puts "99 - chercher une meilleure arme"
     puts "98 - chercher à te soigner"
     puts "attaquer un joueur en vue :"
@@ -76,6 +86,11 @@ class Game
       print "4 --> #{@player4.name} : "
       @player4.show_state
     end
+    if @random_player.life_points > 0 #cette methode ne fonctionne pas si la valeur est nul
+      print "5 --> #{@random_player.name} : "
+      @random_player.show_state
+    end
+    
     print "> "
     
   end
@@ -83,6 +98,7 @@ class Game
   def menu_choice
   #demande une réponse
     user_answer = gets.chomp.to_i
+    
   #execution des actions
     case
       when user_answer == 99
@@ -105,7 +121,12 @@ class Game
         user.attacks(@player4)
         kill_player(@player4) if @player4.life_points < 0
         @player4.show_state if @player4.life_points > 0
-      end
+      when user_answer == 5
+        user.attacks(@random_player)
+        kill_player(@random_player) if @random_player.life_points < 0 #ce code ne fonctionne pas si la valeur est nul
+        @random_player.show_state if @random_player.life_points > 0
+      
+    end
   end
 
   def enemies_attack

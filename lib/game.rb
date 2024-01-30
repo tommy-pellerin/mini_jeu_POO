@@ -1,23 +1,50 @@
 class Game
-  attr_accessor :user, :enemies
+  attr_accessor :user, :enemies, :players_left, :enemies_in_sight
   
 
   def initialize(name)
     @user = HumanPlayer.new(name) #création de l'object user en tant que HumanPlayer
-    @enemies = [player1 = Player.new("José"), player2 = Player.new("Josianne"), player3 = Player.new("Jean"), player4 = Player.new("Jaccobe")] #un array de 4 joueur IA
+    # @enemies = [player1 = Player.new("José"), player2 = Player.new("Josianne"), player3 = Player.new("Jean"), player4 = Player.new("Jaccobe")] #un array de 4 joueur IA
     @player1 = @enemies[0]
     @player2 = @enemies[1]
     @player3 = @enemies[2]
     @player4 = @enemies[3]
+    @players_left = 10 #integer
+    @enemies_in_sight = []
   end
 
   def kill_player(player)
     @enemies.delete(player) #supprime un ennemie du tableau des ennemies
   end
-
+  #version 3.0
+  # def is_still_ongoing?
+  #   if @user.life_points > 0 && !@enemies.empty? #si la santé du joueur est > 0 et que le tableau des ennemies n'est pas vide
+  #     true
+  #   end
+  # end
+  #version4.0
   def is_still_ongoing?
-    if @user.life_points > 0 && !@enemies.empty? #si la santé du joueur est > 0 et que le tableau des ennemies n'est pas vide
+    if @user.life_points > 0 && !@enemies_in_sight.empty? #si la santé du joueur est > 0 et que le tableau des ennemies n'est pas vide
       true
+    end
+  end
+
+  def new_players_in_sight
+    if @enemies_in_sight.size == @players_left #si les joueurs sont déjà en vue, on ne créer rien
+      puts "Tous les joueurs sont déjà en vue : Pas d'ennemie en plus"
+    end
+    dice_result = rand(1..6)
+    case
+      when dice_result == 1
+        puts "Tu as de la chance : pas d'ennemie en plus"
+      when dice_result >= 2 && dice_result <= 4
+        random_name = #générer un nom éléatoire
+        @enemies_in_sight << #ajout d'un joueur
+        puts "Pas de chance : 1 ennemie en plus"
+      when dice_result >= 5
+        random_name = #générer un nom éléatoire
+        @enemies_in_sight << #ajout d'un joueur
+        puts "T'es dans la merde : 2 ennemies en plus"
     end
   end
 

@@ -31,8 +31,10 @@ while my_game.is_still_ongoing?
   puts "...appui sur ENTRER pour continuer..."
   gets.chomp
 
-  #choix des actions
+  #affiche menu
+  my_game.new_players_in_sight
   my_game.menu
+  #choix des actions
   my_game.menu_choice
 
   #tempo
